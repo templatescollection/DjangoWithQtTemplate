@@ -23,7 +23,7 @@ packaging==25.0
     # via gunicorn
 pathspec==1.0.1
     # via mypy
-sqlparse==0.5.3
+sqlparse==0.5.5
     # via django
 typing-extensions==4.15.0
     # via mypy
