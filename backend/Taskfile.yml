@@ -1,0 +1,9 @@
+# https://taskfile.dev
+
+version: "3"
+
+includes:
+  backend:
+    taskfile: ./backend
+    aliases: [be]
+    dir: ./backend

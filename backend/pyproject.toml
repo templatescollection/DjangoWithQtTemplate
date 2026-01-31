@@ -1,0 +1,29 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=6.0.0",
+    "djangorestframework>=3.16.0",
+    "gunicorn>=23.0.0",
+]
+
+
+[dependency-groups]
+dev = [
+    "mypy[faster-cache,reports]>=1.19.1",
+    "pre-commit>=4.5.1",
+    "ruff>=0.1.0",
+    "pytest>=7.0.0",
+    "pytest-django>=4.8.0",
+    "pytest-cov>=4.0.0",
+    "coverage>=7.0.0",
+    "pre-commit>=3.0.0",
+    "mypy>=1.0.0",
+    "django-stubs>=5.0.0",
+]
+sec = [
+    "bandit>=1.9.3",
+]
