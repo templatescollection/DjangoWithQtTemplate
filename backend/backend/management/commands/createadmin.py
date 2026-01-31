@@ -1,6 +1,15 @@
+from typing import TypedDict, Unpack
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand, CommandParser
+
+
+class UserInfo(TypedDict):
+    username: str
+    email: str
+    password: str
+    force: bool
 
 
 class Command(BaseCommand):
@@ -28,7 +37,7 @@ class Command(BaseCommand):
             help="Force update password if user already exists",
         )
 
-    def handle(self, **options) -> None:
+    def handle(self, **options: Unpack[UserInfo]) -> None:
         username = options["username"]
         email = options["email"]
         password = options["password"]
