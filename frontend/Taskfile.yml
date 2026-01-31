@@ -1,0 +1,92 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  default:
+    desc: "Show available tasks"
+    cmds:
+      - 'go-task --list-all'
+    silent: true
+
+  install:
+    desc: "Install frontend dependencies"
+    cmds:
+      - uv sync
+
+  run:
+    desc: "Run the PySide6 frontend application"
+    cmds:
+      - uv run frontend
+
+  run-python:
+    desc: "Run frontend using Python module"
+    cmds:
+      - python -m frontend.application
+
+  ui-generate:
+    desc: "Generate Python UI files from .ui files"
+    cmds:
+      - 'uv run pyside6-uic ui/MainWindows.ui -o src/ui/main_windows.py'
+      - 'echo "UI files generated: src/ui/main_windows.py"'
+
+  ui-generate-check:
+    desc: "Check if generated UI files are up-to-date"
+    cmds:
+      - 'uv run pyside6-uic ui/MainWindows.ui -o /tmp/main_windows.py'
+      - 'diff -q src/ui/main_windows.py /tmp/main_windows.py || (echo "Generated UI file is out of date. Run: task frontend:ui-generate" && rm /tmp/main_windows.py && exit 1)'
+      - 'rm /tmp/main_windows.py'
+      - 'echo "UI files are up-to-date"'
+
+  ui-clean:
+    desc: "Clean generated UI Python files"
+    cmds:
+      - find src/ui -name "*.py" ! -name "__init__.py" -delete
+      - echo "Generated UI files cleaned (__init__.py preserved)"
+
+  lint:
+    desc: "Lint frontend code with Ruff"
+    cmds:
+      - uv run ruff check src/
+
+  format:
+    desc: "Format frontend code with Ruff"
+    cmds:
+      - uv run ruff format src/
+
+  check:
+    desc: "Check code quality (lint + format)"
+    cmds:
+      - task: lint
+      - task: format
+
+  clean:
+    desc: "Clean generated files and caches"
+    cmds:
+      - rm -rf __pycache__ src/__pycache__ src/frontend/__pycache__ src/ui/__pycache__
+      - rm -rf .mypy_cache .pytest_cache
+      - find . -name "*.pyc" -delete
+      - find . -name "*.pyo" -delete
+      - find . -name "__pycache__" -type d -exec rm -rf {} +
+
+  build:
+    desc: "Build frontend package"
+    cmds:
+      - uv build
+
+  test:
+    desc: "Run frontend tests (if any)"
+    cmds:
+      - echo "No tests defined yet. Add tests to tests/ directory."
+
+  pre-commit:
+    desc: "Run pre-commit hooks on frontend files"
+    cmds:
+      - uv run pre-commit run --all-files
+
+  all:
+    desc: "Run install, check, and test"
+    cmds:
+      - task: install
+      - task: check
+      - task: test

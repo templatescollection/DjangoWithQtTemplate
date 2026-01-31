@@ -2,8 +2,116 @@
 
 version: "3"
 
-includes:
-  backend:
-    taskfile: ./backend
-    aliases: [be]
-    dir: ./backend
+tasks:
+  default:
+    desc: "Show available tasks"
+    cmds:
+      - 'go-task --list-all'
+    silent: true
+
+  install:
+    desc: "Install backend dependencies"
+    cmds:
+      - uv sync --extra dev
+
+  run:
+    desc: "Run Django development server"
+    cmds:
+      - uv run python manage.py runserver
+
+  run-prod:
+    desc: "Run with production settings"
+    cmds:
+      - uv run python manage.py runserver 0.0.0.0:8000 --settings=backend.settings
+
+  migrate:
+    desc: "Run database migrations"
+    cmds:
+      - uv run python manage.py migrate
+
+  makemigrations:
+    desc: "Create new migrations"
+    cmds:
+      - uv run python manage.py makemigrations
+
+  showmigrations:
+    desc: "Show migration status"
+    cmds:
+      - uv run python manage.py showmigrations
+
+  createsuperuser:
+    desc: "Create admin superuser"
+    cmds:
+      - uv run python manage.py createsuperuser
+
+  test:
+    desc: "Run all tests"
+    cmds:
+      - uv run pytest
+
+  test-file:
+    desc: "Run specific test file"
+    cmds:
+      - uv run pytest {{.CLI_ARGS}}
+
+  test-single:
+    desc: "Run single test"
+    cmds:
+      - uv run pytest {{.CLI_ARGS}} -v
+
+  lint:
+    desc: "Lint backend code with Ruff"
+    cmds:
+      - uv run ruff check .
+
+  format:
+    desc: "Format backend code with Ruff"
+    cmds:
+      - uv run ruff format .
+
+  type-check:
+    desc: "Type check with MyPy"
+    cmds:
+      - uv run mypy .
+
+  check:
+    desc: "Run all code quality checks"
+    cmds:
+      - task: lint
+      - task: format
+      - task: type-check
+
+  pre-commit:
+    desc: "Run pre-commit checks"
+    cmds:
+      - uv run pre-commit run --all-files
+
+  collectstatic:
+    desc: "Collect static files"
+    cmds:
+      - uv run python manage.py collectstatic --noinput
+
+  clean:
+    desc: "Clean generated files and caches"
+    cmds:
+      - rm -rf __pycache__ */__pycache__ */*/__pycache__
+      - rm -rf .mypy_cache .pytest_cache .coverage htmlcov
+      - rm -rf build dist *.egg-info
+      - find . -name "*.pyc" -delete
+      - find . -name "*.pyo" -delete
+      - find . -name "__pycache__" -type d -exec rm -rf {} +
+
+  shell:
+    desc: "Open Django shell"
+    cmds:
+      - uv run python manage.py shell
+
+  dbshell:
+    desc: "Open database shell"
+    cmds:
+      - uv run python manage.py dbshell
+
+  health:
+    desc: "Check backend health"
+    cmds:
+      - uv run python checkhealth.py

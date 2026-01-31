@@ -1,0 +1,53 @@
+# https://taskfile.dev
+
+version: "3"
+
+includes:
+  backend:
+    taskfile: ./backend/Taskfile.yml
+    aliases: [be, backend]
+    dir: ./backend
+    
+  frontend:
+    taskfile: ./frontend/Taskfile.yml
+    aliases: [fe, frontend]
+    dir: ./frontend
+
+tasks:
+
+  all:
+    desc: "Run backend and frontend checks"
+    cmds:
+      - task: backend:lint
+      - task: backend:format
+      - task: frontend:lint
+      - task: frontend:format
+
+  dev:
+    desc: "Start both backend and frontend development servers"
+    cmds:
+      - 'echo "Start backend: cd backend && uv run python manage.py runserver"'
+      - 'echo "Start frontend: cd frontend && uv run frontend"'
+      - 'echo "Run each command in separate terminals"'
+
+  docker-up:
+    desc: "Start Docker Compose services"
+    cmds:
+      - docker-compose up --build
+
+  docker-down:
+    desc: "Stop Docker Compose services"
+    cmds:
+      - docker-compose down
+
+  clean:
+    desc: "Clean both backend and frontend"
+    cmds:
+      - task: backend:clean
+      - task: frontend:clean
+
+  pre-commit:
+    desc: "Run pre‑commit hooks on all files"
+    cmds:
+      - uv run pre-commit run --all-files
+
