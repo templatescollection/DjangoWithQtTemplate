@@ -24,11 +24,11 @@ Generated UI files (`src/ui/*.py`) are ignored in `.gitignore`. To modify the UI
    ```bash
    # Install UI tools (first time)
    uv add pyside6-tools
-   
+
    # Generate UI Python files
    pyside6-uic ui/MainWindows.ui -o src/ui/main_windows.py
    ```
-   
+
     Or use the task runner:
     ```bash
     go-task frontend:ui-generate

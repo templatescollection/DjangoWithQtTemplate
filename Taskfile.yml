@@ -7,13 +7,18 @@ includes:
     taskfile: ./backend/Taskfile.yml
     aliases: [be, backend]
     dir: ./backend
-    
+
   frontend:
     taskfile: ./frontend/Taskfile.yml
     aliases: [fe, frontend]
     dir: ./frontend
 
 tasks:
+
+  install:
+    desc: "Install workspace dependencies"
+    cmds:
+      - uv sync --all-extras
 
   all:
     desc: "Run backend and frontend checks"
@@ -50,4 +55,3 @@ tasks:
     desc: "Run pre‑commit hooks on all files"
     cmds:
       - uv run pre-commit run --all-files
-

@@ -7,9 +7,8 @@ on:
     branches: [main, dev]
 
 jobs:
-  lint:
+  backend:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,9 +23,18 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
+      - name: Cache UV
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
+
       - name: Install dependencies
-        working-directory: backend
-        run: uv sync --group dev
+        run: uv sync --all-extras
 
       - name: Run Ruff linter
         working-directory: backend
@@ -39,3 +47,45 @@ jobs:
       - name: Run MyPy type checker
         working-directory: backend
         run: uv run mypy .
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install UV
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Cache UV
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Check UI generation
+        run: |
+          uv run pyside6-uic ui/MainWindows.ui -o /tmp/main_windows.py
+          diff -q src/ui/main_windows.py /tmp/main_windows.py || (echo "Generated UI file is out of date" && rm /tmp/main_windows.py && exit 1)
+          rm /tmp/main_windows.py
+          echo "UI files are up-to-date"
+
+      - name: Run Ruff linter
+        run: uv run ruff check src/
+
+      - name: Run Ruff formatter check
+        run: uv run ruff format --check src/
