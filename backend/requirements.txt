@@ -21,7 +21,7 @@ orjson==3.11.5
     # via mypy
 packaging==25.0
     # via gunicorn
-pathspec==1.0.1
+pathspec==1.0.4
     # via mypy
 sqlparse==0.5.3
     # via django
