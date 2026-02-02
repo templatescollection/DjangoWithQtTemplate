@@ -4,11 +4,18 @@ version = "0.1.0"
 description = "Django backend with PySide6 Qt frontend template"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "backend",
+    "frontend",
+]
 
 
 [tool.uv.workspace]
 members = ["backend", "frontend"]
+
+[tool.uv.sources]
+backend = { workspace = true }
+frontend = { workspace = true }
 
 
 [dependency-groups]
