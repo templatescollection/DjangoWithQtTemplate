@@ -98,14 +98,17 @@ jobs:
         run: uv sync --all-groups
 
       - name: Generate UI files
+        working-directory: frontend
         run: uv run pyside6-uic ui/MainWindows.ui -o src/ui/main_windows.py
 
       - name: Build package
+        working-directory: frontend
         run: uv build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
+          working-directory: frontend
           name: frontend-build-${{ matrix.os }}
           path: dist/
 
