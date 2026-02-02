@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Download workspace
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: workspace
 
@@ -76,7 +76,7 @@ jobs:
     needs: setup
     steps:
       - name: Download workspace
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: workspace
 
