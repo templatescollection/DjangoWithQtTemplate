@@ -96,10 +96,12 @@ jobs:
           sudo apt-get install -y libxkbcommon-x11-0 libxcb-cursor0 libgl1-mesa-glx libegl1-mesa libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-xkb1 libxkbcommon0
 
       - name: Generate UI files
+        working-directory: frontend
         run: uv run pyside6-uic ui/MainWindows.ui -o src/ui/main_windows.py
 
       - name: Run tests
         run: echo "No tests defined yet. Add tests to tests/ directory."
 
       - name: Check if package can be imported
+        working-directory: frontend
         run: uv run python -c "import frontend"
