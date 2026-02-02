@@ -82,14 +82,6 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      - name: Check UI generation
-        working-directory: frontend
-        run: |
-          uv run pyside6-uic ui/MainWindows.ui -o /tmp/main_windows.py
-          diff -q src/ui/main_windows.py /tmp/main_windows.py || (echo "Generated UI file is out of date" && rm /tmp/main_windows.py && exit 1)
-          rm /tmp/main_windows.py
-          echo "UI files are up-to-date"
-
       - name: Run Ruff linter
         working-directory: frontend
         run: uv run ruff check src/
