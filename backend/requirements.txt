@@ -8,7 +8,7 @@ django==6.0.1
     #   djangorestframework
 djangorestframework==3.16.0
     # via backend
-gunicorn==23.0.0
+gunicorn==25.1.0
     # via backend
 librt==0.7.7 ; platform_python_implementation != 'PyPy'
     # via mypy
