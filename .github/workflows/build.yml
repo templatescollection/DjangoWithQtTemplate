@@ -29,7 +29,7 @@ jobs:
         run: uv sync --all-groups
 
       - name: Upload workspace
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: workspace
           path: .
@@ -62,7 +62,7 @@ jobs:
         run: uv build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: backend-build
           path: backend/dist/
@@ -109,7 +109,7 @@ jobs:
         run: uv build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           working-directory: frontend
           name: frontend-build-${{ matrix.os }}
@@ -142,7 +142,7 @@ jobs:
         run: uv run bandit -c backend/bandit.yml -r . -f json -o bandit-report.json || true
 
       - name: Upload security reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: security-reports
