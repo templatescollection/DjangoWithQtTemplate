@@ -27,5 +27,5 @@ sqlparse==0.5.3
     # via django
 typing-extensions==4.15.0
     # via mypy
-tzdata==2025.2 ; sys_platform == 'win32'
+tzdata==2026.1 ; sys_platform == 'win32'
     # via django
