@@ -14,7 +14,7 @@ librt==0.7.7 ; platform_python_implementation != 'PyPy'
     # via mypy
 lxml==6.0.2
     # via mypy
-mypy==1.19.1
+mypy==1.20.0
 mypy-extensions==1.1.0
     # via mypy
 orjson==3.11.5
